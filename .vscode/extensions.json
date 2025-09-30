@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        // "ms-python.vscode-pylance", Not needed if you're using Cursor
+        "charliermarsh.ruff"
+    ]
+}
