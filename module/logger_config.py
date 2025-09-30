@@ -1,14 +1,15 @@
-import logging
-import sys
 from datetime import datetime
+import logging
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
+import sys
 
 import structlog
 
 from module.settings import settings
 
 
-def setup_logging():
+def setup_logging() -> None:
     """
     Centralized logging setup for the backend. Configures log level, format, and logger filtering.
     Sets up dual logging: pretty, human-readable logs to console, and JSON logs to file (app.log),
@@ -25,13 +26,21 @@ def setup_logging():
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(settings.log_level)
-    # File handler (JSON)
+    # File handler (JSON) with rotation
     log_date = datetime.now().strftime("%Y-%m-%d")
     log_dir = Path("logs") / log_date
     log_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     log_file = log_dir / f"app_{timestamp}.log"
-    file_handler = logging.FileHandler(str(log_file), mode="w", encoding="utf-8")
+
+    # Use RotatingFileHandler for automatic log rotation
+    file_handler = RotatingFileHandler(
+        str(log_file),
+        mode="w",
+        encoding="utf-8",
+        maxBytes=settings.log_max_bytes,
+        backupCount=settings.log_backup_count,
+    )
     file_handler.setLevel(settings.log_level)
 
     # Use structlog's ProcessorFormatter for both handlers
@@ -43,17 +52,13 @@ def setup_logging():
     ]
     console_handler.setFormatter(
         structlog.stdlib.ProcessorFormatter(
-            processor=structlog.dev.ConsoleRenderer(
-                colors=True, exception_formatter=structlog.dev.plain_traceback
-            ),
+            processor=structlog.dev.ConsoleRenderer(colors=True, exception_formatter=structlog.dev.plain_traceback),
             foreign_pre_chain=pre_chain,
         )
     )
     file_handler.setFormatter(
         structlog.stdlib.ProcessorFormatter(
-            processor=structlog.dev.ConsoleRenderer(
-                colors=False, exception_formatter=structlog.dev.plain_traceback
-            ),
+            processor=structlog.dev.ConsoleRenderer(colors=False, exception_formatter=structlog.dev.plain_traceback),
             foreign_pre_chain=pre_chain,
         )
     )

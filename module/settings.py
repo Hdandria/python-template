@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     )
     log_dir: str = Field(default="logs", description="Directory for log files")
     log_file: str = Field(default="app.log", description="Main log file name")
+    log_max_bytes: int = Field(default=10485760, description="Maximum size of log file before rotation (10MB)")
+    log_backup_count: int = Field(default=5, description="Number of backup log files to keep")
     logger_level_overrides: Dict[str, str] = Field(
         default_factory=dict,
         description="Override log levels for specific loggers (e.g., {'module.submodule': 'DEBUG'})",

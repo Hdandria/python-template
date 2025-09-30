@@ -1,11 +1,41 @@
 [project]
 name = "python-template"
 version = "0.1.0"
-description = "Add your description here"
+description = "A modern Python project template with structured logging and configuration management"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "colorama>=0.4.6",
-    "pydantic-settings>=2.11.0",
+    "pydantic-settings>=2.10.1",
     "structlog>=25.4.0",
+    "python-dotenv>=1.1.1",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "black>=25.1.0",
+    "ruff>=0.12.3",
+    "isort>=6.0.1",
+    "pyright>=1.1.403",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["I", "F", "E"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line_length = 120

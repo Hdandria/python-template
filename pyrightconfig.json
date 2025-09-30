@@ -1,0 +1,28 @@
+{
+    "include": [
+        "module",
+        "scripts",
+    ],
+    "exclude": [
+        ".venv",
+        ".ruff_cache",
+        ".pytest_cache",
+        "logs",
+        "**/node_modules",
+        "**/__pycache__",
+        "**/*.pyc",
+        "**/.*"
+    ],
+    "reportMissingImports": true,
+    "reportMissingModuleSource": true,
+    "pythonVersion": "3.12",
+    "pythonPlatform": "All",
+    "venvPath": ".",
+    "venv": ".venv",
+    "executionEnvironments": [
+        {
+            "root": "."
+        }
+    ],
+    "typeCheckingMode": "basic"
+}

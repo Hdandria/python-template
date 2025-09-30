@@ -43,16 +43,16 @@ This repository serves as a template for all Python projects within the enterpri
 
 4. **Run the project:**
    ```bash
-   uv run python main.py
+   uv run python -m module
    ```
 
 ## Project Structure
 
 ```
 python-template/
-├── main.py                 # Entry point
 ├── module/                 # Main package
 │   ├── __init__.py
+│   ├── __main__.py        # Entry point
 │   ├── settings.py        # Configuration management
 │   └── logger_config.py   # Logging setup
 ├── pyproject.toml         # Project configuration
