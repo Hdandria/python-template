@@ -9,12 +9,13 @@ A modern Python project template with structured logging, configuration manageme
    ```bash
    git clone <repository-url>
    cd python-template
+   uv venv
    uv sync
    ```
 
 2. **Run the project:**
    ```bash
-   uv run python -m module
+   uv run python -m module # uv prefix only if you didn't activate your venv yet.
    ```
 
 ## Prerequisites

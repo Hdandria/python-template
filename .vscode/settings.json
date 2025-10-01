@@ -6,5 +6,5 @@
             "source.organizeImports.ruff": "explicit",
         }
     },
-    "python.languageServer": "Pylance",
+    "python.languageServer": "None",
 }
