@@ -1,6 +1,6 @@
 # Python Project Template
 
-A modern Python project template with structured logging, configuration management, and development best practices.
+A simple Python project template with structured logging, configuration management, and development best practices.
 
 ## Quick Start
 
