@@ -10,15 +10,6 @@ dependencies = [
     "python-dotenv>=1.1.1",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "ruff>=0.12.3",
-    "pyright>=1.1.403",
-    "pytest>=8.0.0",
-    "pytest-cov>=4.0.0",
-    "pre-commit>=3.7.1",
-]
-
 [tool.ruff]
 line-length = 120
 target-version = "py312"
@@ -39,3 +30,12 @@ force-sort-within-sections = true
 
 [tool.ruff.format]
 quote-style = "double"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.3",
+    "pyright>=1.1.403",
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+    "pre-commit>=3.7.1",
+]

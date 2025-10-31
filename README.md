@@ -21,7 +21,7 @@ A simple Python project template with structured logging, configuration manageme
     git clone <repository-url>
     cd python-template
     uv venv
-    uv sync
+    uv sync --dev
     ```
 
 2.  **Set up pre-commit hooks (optional but recommended):**
