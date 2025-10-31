@@ -39,3 +39,6 @@ dev = [
     "pytest-cov>=4.0.0",
     "pre-commit>=3.7.1",
 ]
+
+[tool.setuptools.packages.find]
+include = ["module*"]

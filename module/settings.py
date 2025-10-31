@@ -1,26 +1,19 @@
 from typing import Dict
 
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
-    """
-    Application settings using pydantic-settings for type-safe configuration management.
+class AppSettings(BaseSettings):
+    """Application-specific settings."""
 
-    This class automatically loads configuration from:
-    1. Environment variables
-    2. .env file
-    3. Default values (as defined in Field defaults)
-    """
-
-    # Application Configuration
     app_name: str = Field(default="Python Template", description="Application name")
-    debug: bool = Field(default=False, description="Enable debug mode for development")
-    environment: str = Field(
-        default="development",
-        description="Environment (development, staging, production)",
-    )
+    dev_mode: bool = Field(default=False, description="Enable dev mode for development-specific features")
+
+
+class LogSettings(BaseSettings):
+    """Logging configuration settings."""
+
     log_level: str = Field(
         default="INFO",
         description="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
@@ -34,12 +27,22 @@ class Settings(BaseSettings):
         description="Override log levels for specific loggers (e.g., {'module.submodule': 'DEBUG'})",
     )
 
-    class Config:
-        """Pydantic configuration."""
 
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+class Settings(BaseSettings):
+    """
+    Main settings class that composes all other settings.
+    This class automatically loads configuration from environment variables and .env files.
+    """
+
+    app: AppSettings = AppSettings()
+    log: LogSettings = LogSettings()
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        env_nested_delimiter="__",
+    )
 
 
 # Create global settings instance

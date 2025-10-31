@@ -4,21 +4,18 @@ Script to check if .env configuration is set correctly.
 This script reads from the module settings and displays the current configuration.
 """
 
-import os
-import sys
 from pathlib import Path
-
-# Add the project root to Python path so we can import the module
-project_root = Path(__file__).parent.parent
-sys.path.insert(0, str(project_root))
+import sys
 
 import structlog
 
 from module.logger_config import setup_logging
 from module.settings import settings
 
+project_root = Path(__file__).parent.parent
 
-def check_env_config() -> bool:
+
+def check_env() -> bool:
     """Check and display the current environment configuration."""
     # Setup logging
     setup_logging()
@@ -30,12 +27,11 @@ def check_env_config() -> bool:
         # Display current settings
         logger.info(
             "Current configuration",
-            app_name=settings.app_name,
-            debug_mode=settings.debug,
-            log_level=settings.log_level,
-            environment=settings.environment,
-            log_dir=settings.log_dir,
-            log_file=settings.log_file,
+            app_name=settings.app.app_name,
+            dev_mode=settings.app.dev_mode,
+            log_level=settings.log.log_level,
+            log_dir=settings.log.log_dir,
+            log_file=settings.log.log_file,
         )
 
         # Check if .env file exists
@@ -52,7 +48,7 @@ def check_env_config() -> bool:
             return False
 
         # Check log directory
-        log_dir = Path(settings.log_dir)
+        log_dir = Path(settings.log.log_dir)
         if log_dir.exists():
             logger.info("Log directory exists", log_dir=str(log_dir))
         else:
@@ -71,7 +67,7 @@ def check_env_config() -> bool:
 
 
 if __name__ == "__main__":
-    success = check_env_config()
+    success = check_env()
     if not success:
         # Setup logging for error message
         setup_logging()
