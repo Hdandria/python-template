@@ -15,24 +15,32 @@ A simple Python project template with structured logging, configuration manageme
 
 ## Quick Start
 
-1.  **Clone and install:**
+1.  **Clone the repository and create a virtual environment:**
 
     ```bash
     git clone <repository-url>
     cd python-template
     uv venv
+    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+    ```
+
+2.  **Install dependencies and the package in editable mode:**
+    To ensure that scripts can correctly import the project module, you must install the package in editable (`-e`) mode.
+
+    ```bash
     uv sync --dev
+    uv pip install -e .
     ```
 
-2.  **Set up pre-commit hooks (optional but recommended):**
+3.  **Set up pre-commit hooks (optional but recommended):**
 
     ```bash
-    uv run pre-commit install
+    pre-commit install
     ```
 
-3.  **Run the project:**
+4.  **Run the project:**
     ```bash
-    uv run python -m module # uv prefix only if you didn't activate your venv yet.
+    python -m module
     ```
 
 ## Prerequisites
@@ -113,8 +121,10 @@ Utility scripts in the `scripts/` directory:
 
 - `check_env.py` - Verify .env configuration
 
+To run the scripts, make sure you have installed the package in editable mode as described in the Development section.
+
 ```bash
-uv run python scripts/check_env.py
+python scripts/check_env.py
 ```
 
 ## Development
@@ -135,6 +145,18 @@ def process_data(data: list[dict[str, any]], config: dict[str, str] | None = Non
 - Add dependencies with `uv add <package>`
 - Keep configuration environment-configurable
 - Never commit `.env` files
+
+### Editable Install for Development
+
+When developing, you should install the project package in "editable" or "develop" mode. This allows you to run scripts from the project root and have them correctly import your application code from the `module/` directory.
+
+It also ensures that any changes you make to the Python code are immediately available without needing to reinstall the package.
+
+```bash
+uv pip install -e .
+```
+
+This command should be run after you have created your virtual environment and installed the dependencies with `uv sync`.
 
 ## Containerization
 

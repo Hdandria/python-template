@@ -7,4 +7,12 @@
         }
     },
     "python.languageServer": "None",
+    "files.exclude": {
+        "**/*.egg-info": true,
+        "**/__pycache__": true
+    },
+    "search.exclude": {
+        "**/*.egg-info": true,
+        "**/__pycache__": true
+    }
 }
