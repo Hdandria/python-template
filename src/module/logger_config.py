@@ -26,7 +26,7 @@ def setup_logging() -> None:
         structlog.stdlib.add_logger_name,
         structlog.stdlib.add_log_level,
         structlog.processors.format_exc_info,
-        structlog.processors.TimeStamper(fmt="%H:%M:%S"),
+        structlog.processors.TimeStamper(fmt="%H:%M:%S", utc=False),
     ]
 
     # Determine the renderer for console output based on dev mode
@@ -63,11 +63,19 @@ def setup_logging() -> None:
 
     # Handlers configuration
     handlers: list[logging.Handler] = [console_handler]
-    if not settings.app.dev_mode:
-        # File handler (JSON) - only enabled in production mode
-        log_dir = Path(settings.log.dir)
+    if settings.app.dev_mode:
+        # File handler (JSON) - enabled in dev mode for local debugging
+        from datetime import datetime
+
+        # Create a date-based subdirectory for logs: logs/YYYY-MM-DD/
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        log_dir = Path(settings.log.dir) / current_date
         log_dir.mkdir(parents=True, exist_ok=True)
         log_file = log_dir / settings.log.file
+
+        # Add a visual separator for every run, even the first one
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(f"\n{'=' * 60}\nNEW RUN STARTED AT {datetime.now().strftime('%H:%M:%S')}\n{'=' * 60}\n")
 
         file_handler = RotatingFileHandler(
             str(log_file),
@@ -79,7 +87,8 @@ def setup_logging() -> None:
         file_handler.setLevel(settings.log.level)
         file_handler.setFormatter(
             structlog.stdlib.ProcessorFormatter(
-                processor=structlog.processors.JSONRenderer(),
+                # Use ConsoleRenderer (no colors) for readable text logs in dev files
+                processor=structlog.dev.ConsoleRenderer(colors=False),
                 foreign_pre_chain=shared_processors,
             )
         )
