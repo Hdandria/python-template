@@ -52,11 +52,12 @@ A simple Python project template with structured logging, configuration manageme
 
 ```
 python-template/
-├── module/                 # Main package
-│   ├── __init__.py
-│   ├── __main__.py        # Entry point
-│   ├── settings.py        # Configuration management
-│   └── logger_config.py   # Logging setup
+├── src/
+│   └── module/             # Main package
+│       ├── __init__.py
+│       ├── __main__.py        # Entry point
+│       ├── settings.py        # Configuration management
+│       └── logger_config.py   # Logging setup
 ├── scripts/               # Utility scripts
 ├── tests/                 # Test suite
 ├── .github/               # GitHub Actions workflows

@@ -53,7 +53,7 @@ def setup_logging() -> None:
 
     # Console handler
     console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(settings.log.log_level)
+    console_handler.setLevel(settings.log.level)
     console_handler.setFormatter(
         structlog.stdlib.ProcessorFormatter(
             processor=console_renderer,
@@ -65,18 +65,18 @@ def setup_logging() -> None:
     handlers: list[logging.Handler] = [console_handler]
     if not settings.app.dev_mode:
         # File handler (JSON) - only enabled in production mode
-        log_dir = Path(settings.log.log_dir)
+        log_dir = Path(settings.log.dir)
         log_dir.mkdir(parents=True, exist_ok=True)
-        log_file = log_dir / settings.log.log_file
+        log_file = log_dir / settings.log.file
 
         file_handler = RotatingFileHandler(
             str(log_file),
             mode="a",
             encoding="utf-8",
-            maxBytes=settings.log.log_max_bytes,
-            backupCount=settings.log.log_backup_count,
+            maxBytes=settings.log.max_bytes,
+            backupCount=settings.log.backup_count,
         )
-        file_handler.setLevel(settings.log.log_level)
+        file_handler.setLevel(settings.log.level)
         file_handler.setFormatter(
             structlog.stdlib.ProcessorFormatter(
                 processor=structlog.processors.JSONRenderer(),
@@ -87,11 +87,11 @@ def setup_logging() -> None:
 
     # Configure root logger
     root_logger = logging.getLogger()
-    root_logger.setLevel(settings.log.log_level)
+    root_logger.setLevel(settings.log.level)
     root_logger.handlers = handlers  # Replace existing handlers
 
     # Apply log level overrides from settings
-    for logger_name, level in settings.log.logger_level_overrides.items():
+    for logger_name, level in settings.log.level_overrides.items():
         log_level = getattr(logging, level.upper(), None)
         if isinstance(log_level, int):
             logging.getLogger(logger_name).setLevel(log_level)

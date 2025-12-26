@@ -27,11 +27,8 @@ def check_env() -> bool:
         # Display current settings
         logger.info(
             "Current configuration",
-            app_name=settings.app.app_name,
-            dev_mode=settings.app.dev_mode,
-            log_level=settings.log.log_level,
-            log_dir=settings.log.log_dir,
-            log_file=settings.log.log_file,
+            app=settings.app.model_dump(),
+            log=settings.log.model_dump(),
         )
 
         # Check if .env file exists
@@ -48,7 +45,7 @@ def check_env() -> bool:
             return False
 
         # Check log directory
-        log_dir = Path(settings.log.log_dir)
+        log_dir = Path(settings.log.dir)
         if log_dir.exists():
             logger.info("Log directory exists", log_dir=str(log_dir))
         else:

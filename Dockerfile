@@ -16,10 +16,10 @@ COPY pyproject.toml uv.lock ./
 
 # Install dependencies into the system's Python environment
 # Using --locked ensures reproducible builds from the lock file
-RUN uv sync --locked
+RUN uv sync --locked --no-dev
 
 # Copy the rest of the application's source code
-COPY module/ ./module/
+COPY src/module/ ./module/
 COPY scripts/ ./scripts/
 
 # Set the default command to run the application using uv
